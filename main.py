@@ -8,7 +8,7 @@ I hope you enjoy my mini games! :)
 I will be updating this repository as I learn and improve my coding skills.
 
           
-Another thing I will be doing is leaving personal comments as I go!
+Another thing I will be doing is leaving personal comments as I go :)
 """) ##Something Im use to is string templates, glad to see you can use them in python as well lol 
 
 
@@ -17,6 +17,7 @@ Another thing I will be doing is leaving personal comments as I go!
 ##Another thing! To make a comment you use "#" instead of "//" like in Java and Kotlin
 
 def miniGame1(): 
+    print()
     print("Welcome to the first mini game!") 
     print()
     print("In this game you will have to guess a number between 1 and 5.")
@@ -40,10 +41,97 @@ def miniGame1():
         print("Invalid input. Please enter a number.")
      
 
+def miniGame2():
+    words = ["python", "java", "javascript", "kotlin", "react", "angular"]
+    word = random.choice(words)
+    guessed_letters = []
+    wrong_guesses = 0
+    hangman_pics = ['''
+      +---+
+          |
+          |
+          |
+         ===''', '''
+      +---+
+      O   |
+          |
+          |
+         ===''', '''
+      +---+
+      O   |
+      |   |
+          |
+         ===''', '''
+      +---+
+      O   |
+     /|   |
+          |
+         ===''', '''
+      +---+
+      O   |
+     /|\  |
+          |
+         ===''', '''
+      +---+
+      O   |
+     /|\  |
+     /    |
+         ===''', '''
+      +---+
+      O   |
+     /|\  |
+     / \  |
+         ===''']
+
+    print("""Welcome to Hangman!
+The aim of the game is to guess the selected word (hint: it's a programming language) by guessing one letter at a time.
+You have 6 wrong guesses allowed.
+    """)
+    
+    while wrong_guesses < 6:
+        print(hangman_pics[wrong_guesses])
+        
+        display = ""
+        for letter in word:
+            if letter in guessed_letters:
+                display += letter
+            else:
+                display +="_"
+        print(f"\nWord: {display}") ##f is used to create a string literal something new to me
+        print(f"Guessed letters: {', '.join(sorted(guessed_letters))}")
+        
+        if "_" not in display:
+            print(f"\nCongratulations! You won! The word was '{word}'!")
+            break
+            
+       
+        guess = input("\nGuess a letter: ").lower()
+        
+        if len(guess) != 1:  ##this is a good way to check the length of a string
+            print("Please enter just one letter!")
+            continue
+            
+        if guess in guessed_letters:
+            print("You already guessed that letter!")
+            continue
+            
+        guessed_letters.append(guess)##append is used to add to a list in python
+        
+        if guess not in word:
+            wrong_guesses += 1
+            print(f"Wrong guess! {6 - wrong_guesses} guesses remaining.")
+        else:
+            print("Correct guess!")
+    
+    if wrong_guesses == 6:
+        print(hangman_pics[6])
+        print(f"\nGame Over! The word was '{word}'")
+
+
 def Choice(option):
     switcher = { ##Switch statement looks funny lol 
         1: lambda: miniGame1(), ##You need a comma, you dont need this in Java or Kotlin I believe 
-        2: lambda: print("This game hasn't been made yet! Come back in a few days!")
+        2: lambda: miniGame2() 
 
     }
     func = switcher.get(option)
@@ -59,11 +147,10 @@ def main():
     
     print("Please choose an option:")
     print("1: Play MiniGame 1")
-    print("2: Print a message")
+    print("2: Play MiniGame 2")
     try:
         option = int(input("Enter an option (1-2): "))
         Choice(option)
-        print()
     except ValueError:
         print("Invalid input. Please enter a number.")
 
